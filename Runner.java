@@ -1,3 +1,4 @@
+//Importing the required classes
 
 import java.util.Scanner;
 import java.io.File;
@@ -16,11 +17,13 @@ public class Runner {
 		System.out.println("*                                                 *");
 		System.out.println("***************************************************");
 
-		System.out.println("1) Enter Image Name");
+		//Options for the menu
+		System.out.println("1) Enter Image Name");  
 		System.out.println("2) Select a Filter");
 		System.out.println("3) Apply all Filters");
 		System.out.println("4) Quit");
 
+		//Declaring the required variables
 		int quit = 0, count = 0;
 		String imageName = null;
 		BufferedImage inputImage = null, outputImage = null;
@@ -29,11 +32,13 @@ public class Runner {
 
 		Scanner in = new Scanner(System.in);
 
+		//Starting UI
 		while (quit != 1) {
 			System.out.println("\nSelect Option [1-4]>");
 			int choice = in.nextInt();
 			in.nextLine();
 
+			//Switching for the given choice
 			switch (choice) {
 				case 1:
 					System.out.println("\nEnter Name of the Image File [imagename.extension]>");
@@ -49,6 +54,8 @@ public class Runner {
 				case 2:
 					attributes = Kernel.class.getDeclaredFields();
 					count = 1;
+
+					//Listing all the kernel attributes of Kernel class
 					for (Field field : attributes) {
 						System.out.println(count + " : " + field.getName());
 						count++;
@@ -56,13 +63,12 @@ public class Runner {
 					System.out.println("\nSelect from above Filters [1-11]>");
 					int filterChoice = in.nextInt();
 					try {
-						filter = Convolution.selectFilter(filterChoice);
+						filter = Convolution.selectFilter(filterChoice); //Picking the required kernel
 						System.out.println("Applying " + attributes[filterChoice - 1].getName() + " ...");
-						outputImage = Convolution.convolve(inputImage, filter);
+						outputImage = Convolution.convolve(inputImage, filter); //Convolving kernel with the image
 						ImageIO.write(outputImage, "png",
-								new File(attributes[filterChoice - 1].getName() + "_imageName"));
-						System.out
-								.println("Output Generated: " + attributes[filterChoice - 1].getName() + "_imageName");
+								new File(attributes[filterChoice - 1].getName() + "_"+imageName));
+						System.out.println("Output Generated: " + attributes[filterChoice - 1].getName() + "_" + imageName);
 					} catch (NullPointerException e) {
 						System.out.println("Input Image File Not Specified!");
 					} catch (IndexOutOfBoundsException e) {
@@ -79,8 +85,8 @@ public class Runner {
 
 							outputImage = Convolution.convolve(inputImage, filter);
 
-							ImageIO.write(outputImage, "png", new File(attributes[i].getName() + "_imageName"));
-							System.out.println("Output Generated: " + attributes[i].getName() + "_imageName");
+							ImageIO.write(outputImage, "png", new File(attributes[i].getName() + "_" + imageName));
+							System.out.println("Output Generated: " + attributes[i].getName() + "_" + imageName);
 						}
 					} catch (NullPointerException e) {
 						System.out.println("Input Image File Not Specified!");
